@@ -9,3 +9,16 @@ A simple redis client for scala.
 - Better support for writing data structures (we should be able to do something nice for products.) (case classes should be easy)
 - Setup some tests (with a mock connection)
 - Setup the commands to be added with a connection. (And as the response from a RedisClient)
+- Futures for getting data/objects back from the server.
+- Bulk reads and writes.
+
+# Redis Command Checklist
+
+- PING
+- ECHO
+- QUIT
+- BGSAVE
+- DBSIZE
+- INFO
+- TIME
+- AUTH <pass>
