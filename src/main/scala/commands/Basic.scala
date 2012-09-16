@@ -17,4 +17,9 @@ trait BasicCommands {
     readOrReturn(read)
   }
 
+  def ping = write("PING" + crlf)
+  def echo(s: String) = write("ECHO %s%s".format(s, crlf))
+  def bgsave = write("BGSAVE" + crlf)
+  def time = write("TIME" + crlf)
+  def quit = write("QUIT" + crlf)
 }

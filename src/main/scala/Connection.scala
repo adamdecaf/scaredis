@@ -6,32 +6,36 @@ import java.net.Socket
 private[scaredis] trait ConnectionInterface {
   val host: String
   val port: Int
-  val socket: Socket
-  val outputStream: OutputStream
-  val inputStream: BufferedReader
+  val socket: Option[Socket]
+  val outputStream: Option[OutputStream]
+  val inputStream: Option[BufferedReader]
   def read: String
   def write(str: String): Unit
-  def close: Unit
+
+  def close: Unit = {
+    inputStream.foreach { _.close() }
+    outputStream.foreach { _.close() }
+    socket.foreach{ _.close() }
+  }
+
 }
 
 private[scaredis] class InitConnection(val host: String, val port: Int) extends ConnectionInterface {
 
-  val socket = new Socket(host, port)
-  val outputStream = socket.getOutputStream
-  val inputStream = new BufferedReader(new InputStreamReader(socket.getInputStream))
+  val socket = Some(new Socket(host, port))
+  val outputStream = socket.map { _.getOutputStream }
+  val inputStream = {
+    if (socket.isDefined) Some(new BufferedReader(new InputStreamReader(socket.get.getInputStream)))
+    else None
+  }
 
   def read: String = {
-    inputStream.readLine
+    if (inputStream.isDefined) inputStream.get.readLine
+    else ""
   }
 
   def write(str: String): Unit = {
-    outputStream.write(str.getBytes)
-  }
-
-  def close: Unit = {
-    inputStream.close()
-    outputStream.close()
-    socket.close()
+    if (outputStream.isDefined) outputStream.get.write(str.getBytes)
   }
 
 }
