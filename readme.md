@@ -2,6 +2,16 @@
 
 A simple redis client for scala.
 
+# Syntax
+
+```scala
+    val redis = RedisClient() // Defaults to "localhost", 6379
+    redis choose // Pick a database
+    redis += // item[s]
+    redis -= // Remove item[s]
+    redis ?? // Get an item back wrapped in a future
+```
+
 # TODO
 
 - Read responses and figure out types and how to handle errors.
@@ -11,14 +21,3 @@ A simple redis client for scala.
 - Setup the commands to be added with a connection. (And as the response from a RedisClient)
 - Futures for getting data/objects back from the server.
 - Bulk reads and writes.
-
-# Redis Command Checklist
-
-- PING
-- ECHO
-- QUIT
-- BGSAVE
-- DBSIZE
-- INFO
-- TIME
-- AUTH <pass>
